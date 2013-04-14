@@ -24,7 +24,7 @@
 <configuration>
 <property>
   <name>hbase.rootdir</name>
-  <value>hdfs://<%= scope.lookupvar('hbase::params::namenode') %>:<%= scope.lookupvar('hbase::params::hdfsport') %>/<%= scope.lookupvar('hbase::params::rootdir') %></value>
+  <value>hdfs://<%= scope.lookupvar('hbase::params::real_namenode') %>:<%= scope.lookupvar('hbase::params::hdfsport') %>/<%= scope.lookupvar('hbase::params::rootdir') %></value>
   <description>The directory shared by RegionServers.
   </description>
 </property>

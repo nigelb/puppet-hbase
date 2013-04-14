@@ -2,19 +2,47 @@
 
 class hbase::params ( 
 	$version =  "0.95-SNAPSHOT",
- 	$hadoop_user =  "hduser",
+ 	$hadoop_user =  "hadoop",
+ 	$hadoop_uid =  800,
  	$hadoop_group =  "hadoop",
+ 	$hadoop_gid =  800,
 	$master = "master.hadoop",
-	$slaves = ["slave01.hadoop", "slave02.hadoop"] 
-    	$namenode =  "${master}",
-	$hdfsport = "8020",
+	$slaves = ["slave01.hadoop", "slave02.hadoop"] ,
+    	$namenode =  "UNSET",
+	$hdfsport = 8020,
 	$rootdir = "hbase",
-	$java_home = "${java::params::java_base}/jdk${java::params::java_version}",
+	$java_home = "/usr/lib/jvm/java",
 	$hadoop_base = "/opt/hadoop",
-	$hadoop_conf = "${hadoop_base}/hadoop/conf",
+	$hadoop_conf = "UNSET",
 	$hbase_base = "/opt/hbase",
-	$hbase_conf = "${hbase_base}/hbase/conf",
-    	$hadoop_user_path = "/home/${hadoop_user}",
+	$hbase_conf = "UNSET",
+    	$hadoop_user_path = "UNSET"
+)
 {
-	include java::params
+	if $namenode == "UNSET" {
+		$real_namenode = $master
+	}else{
+		$real_namenode = $namenode
+	}
+
+	if $hadoop_conf == "UNSET" {
+		$real_hadoop_conf = "${hadoop_base}/hadoop/conf"
+	}else{
+		$real_hadoop_conf = $hadoop_conf
+	}
+
+	if $hbase_conf == "UNSET"{
+		$real_hbase_conf = "${hbase_base}/hbase/conf"
+	}else{
+		$real_hbase_conf = $hbase_conf
+	}
+
+	if $hadoop_user_path == "UNSET"{
+		$real_hadoop_user_path = "/home/${hadoop_user}"
+	}else{
+		$real_hadoop_user_path = $hadoop_user_path
+	}
+
+	
+		
 }
