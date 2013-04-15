@@ -6,15 +6,15 @@ class hbase {
 	
 	group { "${hbase::params::hadoop_group}":
 		ensure => present,
-		gid =>$hbase::params::hadoop_gid 
+		gid =>$hbase::params::hadoop_group_gid 
 	}
  
 	user { "${hbase::params::hadoop_user}":
 		ensure => present,
 		comment => "Hadoop",
 		password => "!!",
-		uid => $hbase::params::hadoop_uid,
-		gid => $hbase::params::hadoop_gid,
+		uid => $hbase::params::hadoop_user_uid,
+		gid => $hbase::params::hadoop_group_gid,
 		shell => "/bin/bash",
 		home => "${hbase::params::real_hadoop_user_path}",
 		require => Group["hadoop"],

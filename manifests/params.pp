@@ -3,9 +3,9 @@
 class hbase::params ( 
 	$version =  "0.95-SNAPSHOT",
  	$hadoop_user =  "hadoop",
- 	$hadoop_uid =  800,
+ 	$hadoop_user_uid =  800,
  	$hadoop_group =  "hadoop",
- 	$hadoop_gid =  800,
+ 	$hadoop_group_gid =  800,
 	$master = "master.hadoop",
 	$slaves = ["slave01.hadoop", "slave02.hadoop"] ,
     	$namenode =  "UNSET",
