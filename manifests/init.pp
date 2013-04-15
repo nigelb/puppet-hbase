@@ -4,14 +4,14 @@ class hbase {
 
 	require hbase::params
 
-	if not defined(Grooup[$hbase::params::hadoop_group])
+	if !defined(Group[$hbase::params::hadoop_group]){
 		group { $hbase::params::hadoop_group:
 			ensure => present,
 			gid =>$hbase::params::hadoop_group_gid
 		}
 	}
 
-	if not defined(User[$hbase::params::hadoop_user]){
+	if !defined(User[$hbase::params::hadoop_user]){
 		user { $hbase::params::hadoop_user:
 			ensure => present,
 			comment => "Hadoop",
@@ -23,13 +23,14 @@ class hbase {
 			require => Group[$hbase::params::hadoop_group],
 		}
 	}
- 
-	file { "${hbase::params::real_hadoop_user_path}":
-		ensure => "directory",
-		owner => "${hbase::params::hadoop_user}",
-		group => "${hbase::params::hadoop_group}",
-		alias => "${hbase::params::hadoop_user}-home",
-		require => [ User[$hbase::params::hadoop_user], Group[$hbase::params::hadoop_group] ]
+	if !defined(File[$hbase::params::real_hadoop_user_path]){
+		file { $hbase::params::real_hadoop_user_path:
+			ensure => "directory",
+			owner => $hbase::params::hadoop_user,
+			group => $hbase::params::hadoop_group,
+			alias => "${hbase::params::hadoop_user}-home",
+			require => [ User[$hbase::params::hadoop_user], Group[$hbase::params::hadoop_group] ]
+		}
 	}
  
 	file {"${hbase::params::hbase_base}":
