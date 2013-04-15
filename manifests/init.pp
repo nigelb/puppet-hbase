@@ -3,21 +3,25 @@
 class hbase {
 
 	require hbase::params
-	
-	group { "${hbase::params::hadoop_group}":
-		ensure => present,
-		gid =>$hbase::params::hadoop_group_gid 
+
+	if not defined(Grooup[$hbase::params::hadoop_group])
+		group { $hbase::params::hadoop_group:
+			ensure => present,
+			gid =>$hbase::params::hadoop_group_gid
+		}
 	}
- 
-	user { "${hbase::params::hadoop_user}":
-		ensure => present,
-		comment => "Hadoop",
-		password => "!!",
-		uid => $hbase::params::hadoop_user_uid,
-		gid => $hbase::params::hadoop_group_gid,
-		shell => "/bin/bash",
-		home => "${hbase::params::real_hadoop_user_path}",
-		require => Group["hadoop"],
+
+	if not defined(User[$hbase::params::hadoop_user]){
+		user { $hbase::params::hadoop_user:
+			ensure => present,
+			comment => "Hadoop",
+			password => "!!",
+			uid => $hbase::params::hadoop_user_uid,
+			gid => $hbase::params::hadoop_group_gid,
+			shell => "/bin/bash",
+			home => $hbase::params::real_hadoop_user_path,
+			require => Group[$hbase::params::hadoop_group],
+		}
 	}
  
 	file { "${hbase::params::real_hadoop_user_path}":
@@ -25,7 +29,7 @@ class hbase {
 		owner => "${hbase::params::hadoop_user}",
 		group => "${hbase::params::hadoop_group}",
 		alias => "${hbase::params::hadoop_user}-home",
-		require => [ User["${hbase::params::hadoop_user}"], Group["hadoop"] ]
+		require => [ User[$hbase::params::hadoop_user], Group[$hbase::params::hadoop_group] ]
 	}
  
 	file {"${hbase::params::hbase_base}":
