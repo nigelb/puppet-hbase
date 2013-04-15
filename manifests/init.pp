@@ -1,9 +1,9 @@
 # /etc/puppet/modules/hbase/manafests/init.pp
 
 class hbase {
-
+	require hadoop
 	require hbase::params
-
+	
 	if !defined(Group[$hbase::params::hadoop_group]){
 		group { $hbase::params::hadoop_group:
 			ensure => present,
