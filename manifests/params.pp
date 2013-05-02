@@ -16,7 +16,8 @@ class hbase::params (
 	$hadoop_conf = "UNSET",
 	$hbase_base = "/opt/hbase",
 	$hbase_conf = "UNSET",
-    	$hadoop_user_path = "UNSET"
+    	$hadoop_user_path = "UNSET",
+	$heap_size = 1000
 )
 {
 	if $namenode == "UNSET" {
