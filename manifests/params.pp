@@ -18,7 +18,7 @@ class hbase::params (
 	$hbase_conf = "UNSET",
     	$hadoop_user_path = "UNSET",
 	$heap_size = 1000,
-	$zookeeper_quorum = ["master.hadoop", "slave01.hadoop", "slave02.hadoop"]
+	$zookeeper_quorum = "UNSET"
 )
 {
 	if $namenode == "UNSET" {
@@ -33,18 +33,21 @@ class hbase::params (
 		$real_hadoop_conf = $hadoop_conf
 	}
 
-	if $hbase_conf == "UNSET"{
+	if $hbase_conf == "UNSET" {
 		$real_hbase_conf = "${hbase_base}/hbase/conf"
 	}else{
 		$real_hbase_conf = $hbase_conf
 	}
 
-	if $hadoop_user_path == "UNSET"{
+	if $hadoop_user_path == "UNSET" {
 		$real_hadoop_user_path = "/home/${hadoop_user}"
 	}else{
 		$real_hadoop_user_path = $hadoop_user_path
 	}
 
-	
-		
+	if $zookeeper_quorum == "UNSET" {
+		$real_zookeeper_quorum = $slaves
+	}else {
+		$real_zookeeper_quorum = $zookeeper_quorum
+	}
 }
