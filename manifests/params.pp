@@ -17,7 +17,8 @@ class hbase::params (
 	$hbase_base = "/opt/hbase",
 	$hbase_conf = "UNSET",
     	$hadoop_user_path = "UNSET",
-	$heap_size = 1000
+	$heap_size = 1000,
+	$zookeeper_quorum = ["master.hadoop", "slave01.hadoop", "slave02.hadoop"]
 )
 {
 	if $namenode == "UNSET" {
