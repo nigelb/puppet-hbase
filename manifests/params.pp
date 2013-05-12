@@ -18,7 +18,8 @@ class hbase::params (
 	$hbase_conf = "UNSET",
     	$hadoop_user_path = "UNSET",
 	$heap_size = 1000,
-	$zookeeper_quorum = "UNSET"
+	$zookeeper_quorum = "UNSET",
+	$zookeeper_dataDir = "/tmp/zookeeper"
 )
 {
 	if $namenode == "UNSET" {
