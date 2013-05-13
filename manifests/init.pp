@@ -48,6 +48,15 @@ class hbase {
 		require => [File["hbase-base"], Exec["untar-hbase"]],
 		before => [File["hbase-site-xml"], File["hdfs-site-xml-link"], File["hbase-env-sh"]]
 	}
+
+ 	file {"${hbase::params::zookeeper_dataDir}":
+		ensure => "directory",
+		owner => "${hbase::params::hadoop_user}",
+		group => "${hbase::params::hadoop_group}",
+		alias => "hbase-zookeeper-datadir",
+		before => [File["hbase-site-xml"], File["hdfs-site-xml-link"], File["hbase-env-sh"]]
+	}
+
  
 	file { "${hbase::params::hbase_base}/hbase-${hbase::params::version}.tar.gz":
 		mode => 0644,
