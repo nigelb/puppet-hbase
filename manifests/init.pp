@@ -77,7 +77,7 @@ class hbase {
 		subscribe => File["hbase-source-tgz"],
 		user => "${hbase::params::hadoop_user}",
 		before => [ File["hbase-symlink"], File["hbase-app-dir"]],
-        path    => ["/bin", "/usr/bin", "/usr/sbin"],
+        	path    => ["/bin", "/usr/bin", "/usr/sbin"],
 	}
 
 	file { "${hbase::params::hbase_base}/hbase-${hbase::params::version}":
@@ -86,7 +86,26 @@ class hbase {
 		owner => "${hbase::params::hadoop_user}",
 		group => "${hbase::params::hadoop_group}",
 		alias => "hbase-app-dir",
-        require => Exec["untar-hbase"],
+	        require => Exec["untar-hbase"],
+	}
+
+	file { "/etc/hbase":
+		force => true,
+		ensure => "link",
+		target => "${hbase::params::hbase_base}/hbase-${hbase::params::version}/conf",
+		alias => "etc-hbase-symlink",
+		owner => $hbase::params::hadoop_user,
+		group => $hbase::params::hadoop_group,
+		require => File["hbase-app-dir"],
+	}
+	file { "/var/log/hbase":
+		force => true,
+		ensure => "link",
+		target => "${hbase::params::hbase_base}/hbase-${hbase::params::version}/logs",
+		alias => "log-hbase-symlink",
+		owner => $hbase::params::hadoop_user,
+		group => $hbase::params::hadoop_group,
+		require => File["hbase-app-dir"],
 	}
 		
 	file { "${hbase::params::hbase_base}/hbase":
