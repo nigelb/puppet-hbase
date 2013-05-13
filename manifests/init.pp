@@ -115,7 +115,7 @@ class hbase {
 		owner => "${hbase::params::hadoop_user}",
 		group => "${hbase::params::hadoop_group}",
 		require => File["hbase-source-tgz"],
-		before => [ File["hbase-site-xml"], File["hdfs-site-xml-link"], File["hbase-env-sh"]]
+		before => [ File["hbase-site-xml"], File["hdfs-site-xml-link"], File["hbase-env-sh"], File["hbase-logging-conf"]]
 	}
 	
 	file { "${hbase::params::hbase_base}/hbase-${hbase::params::version}/conf/hbase-site.xml":
@@ -124,6 +124,13 @@ class hbase {
 		mode => "644",
 		alias => "hbase-site-xml",
 		content => template("hbase/conf/hbase-site.xml.erb"),
+	}
+	file { "${hbase::params::hbase_base}/hbase-${hbase::params::version}/conf/log4j.properties":
+		owner => $hbase::params::hadoop_user,
+		group => $hbase::params::hadoop_group,
+		mode => "644",
+		alias => "hbase-logging-conf",
+		source => "puppet:///modules/hbase/conf/log4j.properties",
 	}
 
 	file { "${hbase::params::hbase_base}/hbase-${hbase::params::version}/conf/hdfs-site.xml":
